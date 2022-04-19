@@ -221,6 +221,7 @@ setup(
             'Cython',
             'setuptools',
             'ipython',
+            'auditwheel@git+https://github.com/BvB93/auditwheel@test',
         ],
         'doc': ['sphinx>=2.1', 'sphinx-autodoc-typehints', 'sphinx_rtd_theme', 'nbsphinx']
     },
