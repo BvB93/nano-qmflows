@@ -1,0 +1,10 @@
+prefix=/project/libint2
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Libint2
+Description: a library for the evaluation of molecular integrals of many-body operators over Gaussian functions
+Version: 2.6.0
+Libs: -L${libdir} -lint2
+Cflags: -I${includedir} -I${includedir}/libint2 -I/project/boost -I/project/gmp/include 
