@@ -105,12 +105,6 @@ jobs:
           tree dist
           twine check dist/*
 
-      - name: Publish wheels
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_TOKEN }}
-
       - name: Attach wheels to GitHub release
         if: github.event_name == 'release'
         uses: AButler/upload-release-assets@v2.0
