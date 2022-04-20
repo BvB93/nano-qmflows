@@ -18,13 +18,13 @@ else:
 here = os.path.abspath(os.path.dirname(__file__))
 
 version: "dict[str, str]" = {}
-with open(os.path.join(here, 'nanoqm', '_version.py')) as f:
+with open(os.path.join(here, 'nanoqm', '_version.py'), 'r', encoding='utf8') as f:
     exec(f.read(), version)
 
 
 def readme() -> str:
     """Load readme."""
-    with open('README.rst') as f:
+    with open('README.rst', 'r', encoding='utf8') as f:
         return f.read()
 
 
@@ -97,14 +97,12 @@ class BuildExt(build_ext):
         opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
         if ct == 'unix':
-            opts.append('-DVERSION_INFO="%s"' %
-                        self.distribution.get_version())
+            opts.append('-DVERSION_INFO="%s"' % self.distribution.get_version())
             opts.append(cpp_flag(self.compiler))
             if has_flag(self.compiler, '-fvisibility=hidden'):
                 opts.append('-fvisibility=hidden')
         elif ct == 'msvc':
-            opts.append('/DVERSION_INFO=\\"%s\\"' %
-                        self.distribution.get_version())
+            opts.append('/DVERSION_INFO=\\"%s\\"' % self.distribution.get_version())
         for ext in self.extensions:
             ext.extra_compile_args = opts
             ext.extra_link_args = link_opts
@@ -136,6 +134,15 @@ ext_pybind = Extension(
     language='c++',
 )
 
+with open(os.path.join(here, 'requirements.txt'), 'r', encoding='utf8') as f:
+    install_requires = [i.strip() for i in f]
+
+with open(os.path.join(here, 'test_requirements.txt'), 'r', encoding='utf8') as f:
+    test_requires = [i.strip() for i in f]
+
+with open(os.path.join(here, 'doc_requirements.txt'), 'r', encoding='utf8') as f:
+    doc_requires = [i.strip() for i in f]
+
 setup(
     name='nano-qmflows',
     version=version['__version__'],
@@ -160,35 +167,13 @@ setup(
         'Topic :: Scientific/Engineering :: Chemistry',
         'Typing :: Typed',
     ],
-    install_requires=[
-        'h5py',
-        'mendeleev',
-        'more-itertools',
-        'noodles>=0.3.3',
-        'numpy',
-        'scipy',
-        'schema',
-        'pyyaml>=5.1',
-        'plams>=1.5.1',
-        'qmflows>=0.12.0',
-        'packaging>=1.16.8',
-        'Nano-Utils>=2.0.0',
-    ],
+    install_requires=install_requires,
     cmdclass={'build_ext': BuildExt},
     python_requires='>=3.7',
     ext_modules=[ext_pybind],
     extras_require={
-        'test': [
-            'assertionlib',
-            'codacy-coverage',
-            'pytest',
-            'pytest-cov',
-            'pytest-mock',
-            'Cython',
-            'setuptools',
-            'ipython',
-        ],
-        'doc': ['sphinx>=2.1', 'sphinx-autodoc-typehints', 'sphinx_rtd_theme', 'nbsphinx']
+        'test': test_requires,
+        'doc': doc_requires,
     },
     include_package_data=True,
     package_data={

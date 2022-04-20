@@ -143,7 +143,7 @@ jobs:
     - name: Install the package
       run: |
         source $CONDA/bin/activate test
-        pip install -e . -vvv
+        pip install -e . -vvv --no-deps
 
     - name: Test with pytest
       run: |
