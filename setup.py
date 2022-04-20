@@ -126,6 +126,12 @@ def get_paths() -> "tuple[list[str], list[str]]":
     if include_dirs is not None and lib_dirs is not None:
         include_list = include_dirs.split(os.pathsep) if include_dirs else []
         lib_list = lib_dirs.split(os.pathsep) if lib_dirs else []
+    elif conda_prefix is not None:
+        include_list = [
+            join(conda_prefix, "include"),
+            join(conda_prefix, "include", "eigen3"),
+        ]
+        lib_list = [join(conda_prefix, "lib")]
     else:
         raise RuntimeError(
             "No conda module found. A Conda environment is required "
