@@ -12,7 +12,7 @@ concurrency:
     cancel-in-progress: true
 
 env:
-  CP2K_DEFAULT: "2022.1"
+  CP2K_DEFAULT: "2023.1"
   TAG: "3.0.0"  # The nlesc-nano/nano-qmflows-manylinux tag
   PY_COLORS: "1"
 
@@ -24,33 +24,36 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        version: ["3.8", "3.9", "3.10"]
+        version: ["3.8", "3.9", "3.10", "3.11"]
         special:
           - ["", ""]
         include:
           # GCC 7/11 tests
           - os: ubuntu-latest
-            version: "3.10"
+            version: "3.11"
             special: ["GCC", "7"]
           - os: ubuntu-latest
-            version: "3.10"
+            version: "3.11"
             special: ["GCC", "11"]
           # CP2K 6.1/7.1/8.2/9.1 tests
           - os: ubuntu-latest
-            version: "3.10"
+            version: "3.11"
             special: ["CP2K", "6.1"]
           - os: ubuntu-latest
-            version: "3.10"
+            version: "3.11"
             special: ["CP2K", "7.1"]
           - os: ubuntu-latest
-            version: "3.10"
+            version: "3.11"
             special: ["CP2K", "8.2"]
           - os: ubuntu-latest
-            version: "3.10"
+            version: "3.11"
             special: ["CP2K", "9.1"]
+          - os: ubuntu-latest
+            version: "3.11"
+            special: ["CP2K", "2022.1"]
           # Pre-release tests
           - os: ubuntu-latest
-            version: "3.10"
+            version: "3.11"
             special: ["pre-release", ""]
     steps:
     - uses: actions/checkout@v3
@@ -131,7 +134,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        version: ["3.8", "3.9", "3.10"]
+        version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
     - uses: actions/checkout@v3
@@ -177,10 +180,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python 3.10 on ubuntu-latest
+      - name: Set up Python 3.11 on ubuntu-latest
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install linters
         run: pip install -r ./linting_requirements.txt
